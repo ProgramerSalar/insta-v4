@@ -1,7 +1,7 @@
 
 import React from "react";
-import { EllipsisHorizontalIcon  , HeartIcon  , ChatBubbleBottomCenterTextIcon , BookmarkIcon}from '@heroicons/react/24/solid'
-export default function Post({img , userImg , caption , username , id }){
+import { EllipsisHorizontalIcon  , HeartIcon  , ChatBubbleBottomCenterTextIcon , BookmarkIcon, SparklesIcon ,FaceSmileIcon}from '@heroicons/react/24/solid'
+export default function Post({img , userImg , caption , username , id  }){
 
     return(
         <div className="bg-white my-7 border rounded-md ">
@@ -31,8 +31,20 @@ export default function Post({img , userImg , caption , username , id }){
 
 
             </div>
+
+            {/* post comments  */}
             
+            <p className="p-5 truncate "><span className="font-bold mr-2">{username}</span>{caption}</p>
+
+
+            {/* post input box  */}
+            <form action="" className="flex items-center p-14">
+                <FaceSmileIcon className="h-7 text-gray-500"/>
+                <input className="border-none flex-1 focus:ring-0" type="text" placeholder="Enter your Comment........" />
+                <button className="text-blue-400 font-bold ">Post</button>
+            </form>
         
+
         </div>
     )
 }
