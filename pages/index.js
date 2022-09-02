@@ -17,6 +17,8 @@ export default function Home(){
       {/* feed  */}
       <Feed/>
 
+      
+
 
       {/* Model  */}
     </div>
