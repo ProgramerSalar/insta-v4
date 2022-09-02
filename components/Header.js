@@ -1,13 +1,13 @@
 
 import React from "react";
 import Image from "next/image"
-import { MagnifyingGlassIcon} from '@heroicons/react/24/solid'
+import { MagnifyingGlassIcon ,PlusCircleIcon , HomeIcon} from '@heroicons/react/24/solid'
 
 export default function Header(){
     return(
         
             
-            <div className="flex items-center justify-between max-w-6xl">
+            <div className="flex items-center justify-between max-w-6xl mx-4 mx-auto">
                 {/* left  */}
                 <div className="h-24 w-24 relative hidden lg:inline-grid cursor-pointer">
                     <Image 
@@ -36,6 +36,13 @@ export default function Header(){
                     
 
                     {/* right  */}
+
+                    <div className="flex space-x-4 items-center">
+                        <HomeIcon className="hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-transform-200 ease-out "/>
+                        <PlusCircleIcon className="h-6 cursor-pointer hover:scale-125 transition-transform-200 ease-out "/>
+                        <img src=" https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Twemoji_1f600.svg/1200px-Twemoji_1f600.svg.png" alt="user-image" className="h-10 rounded-full"/>
+
+                    </div>
                 <h1> Right side </h1>
             </div>
 
