@@ -1,11 +1,12 @@
 
 import Head from "next/head";
 import React from "react";
+import Feed from "../components/Feed";
 import Header from "../components/Header";
 
 export default function Home(){
   return(
-    <div>
+    <div className="bg-gray-50 min-h-screen">
       <Head>
         <title>Instagram</title>
       </Head>
@@ -14,6 +15,7 @@ export default function Home(){
       <Header/>
 
       {/* feed  */}
+      <Feed/>
 
 
       {/* Model  */}
