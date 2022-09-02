@@ -6,8 +6,8 @@ import { MagnifyingGlassIcon ,PlusCircleIcon , HomeIcon} from '@heroicons/react/
 export default function Header(){
     return(
         
-            
-            <div className="flex items-center justify-between max-w-6xl mx-4 mx-auto">
+        <div className="shadow-sm border-b sticky top-0">
+             <div className="flex items-center justify-between max-w-6xl mx-4 mx-auto">
                 {/* left  */}
                 <div className="h-24 w-24 relative hidden lg:inline-grid cursor-pointer">
                     <Image 
@@ -43,9 +43,12 @@ export default function Header(){
                         <img src=" https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Twemoji_1f600.svg/1200px-Twemoji_1f600.svg.png" alt="user-image" className="h-10 rounded-full"/>
 
                     </div>
-                <h1> Right side </h1>
+                
             </div>
 
+
+        </div>   
+           
             
             
 
