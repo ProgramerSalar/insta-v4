@@ -5,21 +5,25 @@ import { MagnifyingGlassIcon ,PlusCircleIcon , HomeIcon} from '@heroicons/react/
 import { useSession  , signIn , signOut} from "next-auth/react";
 import {useRecoilState} from "recoil"
 import { modalState } from "../atom/modalAtom";
+import { useRouter } from "next/router";
 
 
 export default function Header(){
     const {data:session} = useSession();
     const [open , setOpen ] = useRecoilState(modalState);
+    const router = useRouter();
     return(
         
         <div className="shadow-sm border-b sticky top-0 bg-white z-30 ">
              <div className="flex items-center justify-between max-w-6xl mx-4 mx-auto">
+
                 {/* left  */}
                 <div className="h-24 w-24 relative hidden lg:inline-grid cursor-pointer">
                     <Image 
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1280px-Instagram_logo.svg.png"
                     layout="fill"
                     className="object-contain"
+                    onClick={()=> router.push("/")}
                     />
                 </div>
                 
@@ -28,6 +32,7 @@ export default function Header(){
                     src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg"
                     layout="fill"
                     className="object-contain "
+                    onClick={()=> router.push("/")}
                     />
                 </div>
                     {/* middle  */}
@@ -44,7 +49,7 @@ export default function Header(){
                     {/* right  */}
 
                     <div className="flex space-x-4 items-center">
-                        <HomeIcon className="hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-transform-200 ease-out "/>
+                        <HomeIcon onClick={()=> router.push("/")} className="hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-transform-200 ease-out "/>
                         {session ? (
                             <>
                              <PlusCircleIcon onClick={()=>setOpen(true)} className="h-6 cursor-pointer hover:scale-125 transition-transform-200 ease-out "/>
