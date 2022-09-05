@@ -1,9 +1,10 @@
 
 import React, { useEffect, useState } from "react";
-import { EllipsisHorizontalIcon  , HeartIcon  , ChatBubbleBottomCenterTextIcon , BookmarkIcon, SparklesIcon ,FaceSmileIcon}from '@heroicons/react/24/solid'
+import { EllipsisHorizontalIcon  , HeartIcon  , ChatBubbleBottomCenterTextIcon , BookmarkIcon, SparklesIcon ,FaceSmileIcon }from '@heroicons/react/24/solid'
+import {HeartIcon as HeartIconFilled} from '@heroicons/react/24/solid'
 import {useSession} from "next-auth/react"
 import { async } from "@firebase/util";
-import { addDoc, collection, onSnapshot, orderBy, serverTimestamp , query } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, orderBy, serverTimestamp , query, setDoc, doc, deleteDoc } from "firebase/firestore";
 import Moment from 'react-moment';
 
 import { db } from "../firebase";
@@ -22,14 +23,45 @@ export default function Post({img , userImg , caption , username , id  }){
     const {data : session} = useSession();
     const [comment , setComment] = useState("")
     const [comments, setComments] = useState([]);
+    const [likes  , setLikes] = useState([]);
+    const [hasLiked , setHasLiked] = useState(false);
+    
+
     useEffect(() => {
       const unsubscribe = onSnapshot(
         query(collection(db, "posts", id, "comments"), orderBy("timestamp", "desc")), (snapshot) => {setComments(snapshot.docs)}
       )
   
-    }, [db, id])
+    }, [db, id]);
 
+  
 
+    
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "posts", id, "likes"),
+      (snapshot) => setLikes(snapshot.docs)
+    );
+  }, [db]);
+  useEffect(() => {
+    setHasLiked(
+      likes.findIndex((like) => like.id === session?.user.uid) !== -1
+    );
+  }, [likes]);
+  async function likePost() {
+    if (hasLiked) {
+      await deleteDoc(doc(db, "posts", id, "likes", session.user.uid));
+    } else {
+      await setDoc(doc(db, "posts", id, "likes", session.user.uid), {
+        username: session.user.username,
+      });
+    }
+  }
+        
+    
+
+    
     async function sendComment(event){
         event.preventDefault();
         const commentToSend = comment;
@@ -64,10 +96,15 @@ export default function Post({img , userImg , caption , username , id  }){
 
                 <div className=" flex justify-between px-4 pt-4 ">
                 <div className="flex space-x-4">
-                    <HeartIcon className="btn  text-green-700"/>
-                    <ChatBubbleBottomCenterTextIcon className="btn text-green-700"/>
+                    {hasLiked ? (<HeartIconFilled  onClick={likePost}className="btn text-red-900" />) : (
+                        <HeartIcon onClick={likePost}className="btn " />
+
+                    )}
+                    
+                    
+                    <ChatBubbleBottomCenterTextIcon className="btn "/>
                 </div>
-                <BookmarkIcon className="btn  text-green-700 "/>
+                <BookmarkIcon className="btn  "/>
 
 
                 </div>
