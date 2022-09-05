@@ -1,11 +1,14 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { EllipsisHorizontalIcon  , HeartIcon  , ChatBubbleBottomCenterTextIcon , BookmarkIcon, SparklesIcon ,FaceSmileIcon}from '@heroicons/react/24/solid'
 import {useSession} from "next-auth/react"
 import { async } from "@firebase/util";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, orderBy, serverTimestamp , query } from "firebase/firestore";
+import Moment from 'react-moment';
 
 import { db } from "../firebase";
+import { Snapshot } from "recoil";
+
 
 
 
@@ -18,6 +21,15 @@ import { db } from "../firebase";
 export default function Post({img , userImg , caption , username , id  }){
     const {data : session} = useSession();
     const [comment , setComment] = useState("")
+    const [comments, setComments] = useState([]);
+    useEffect(() => {
+      const unsubscribe = onSnapshot(
+        query(collection(db, "posts", id, "comments"), orderBy("timestamp", "desc")), (snapshot) => {setComments(snapshot.docs)}
+      )
+  
+    }, [db, id])
+
+
     async function sendComment(event){
         event.preventDefault();
         const commentToSend = comment;
@@ -68,7 +80,23 @@ export default function Post({img , userImg , caption , username , id  }){
 
             {/* post comments  */}
             
-            <p className="p-5 truncate "><span className="font-bold mr-2">{username}</span>{caption}</p>
+            <p className="p-5 truncate "><span className="font-bold mr-2">{username}</span>{caption}
+
+            
+            </p>
+            {comments.length > 0 && (
+                <div className="mx-10 max-h-24 overflow-y-scroll scrollbar-none">
+                    {comments.map(comment =>(
+                        <div className="flex items-center space-x-2 mb-2">
+                            <img  className="h-7 rounded-full object-cover" src={comment.data().userImage} alt="user-image" />
+                            <p className="font-semibold ">{comment.data().username}</p>
+                            <p className="flex-1 truncate">{comment.data().comment}</p>
+                            <Moment fromNow>{comment.data().timestamp?.toDate()}</Moment>
+
+                        </div>
+                    ))}
+                </div>
+            )}
 
 
             {/* post input box  */}
@@ -81,7 +109,14 @@ export default function Post({img , userImg , caption , username , id  }){
                 onChange={(event)=>setComment(event.target.value)}
                 
                 className="border-none flex-1 focus:ring-0" type="text" placeholder="Enter your Comment........" />
-                <button type="submit" onClick={sendComment} disabled={!comment.trim()} className="text-blue-400 font-bold disabled:text-blue-200">Post</button>
+                <button
+                type="submit"
+                onClick={sendComment}
+                disabled={!comment}
+                className="text-blue-400 font-bold disabled:text-blue-200 "
+            >
+                Post
+            </button>
                 </form>
 
 
@@ -92,3 +127,4 @@ export default function Post({img , userImg , caption , username , id  }){
         </div>
     )
 }
+

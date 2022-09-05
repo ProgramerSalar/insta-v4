@@ -7,16 +7,7 @@ import { db } from "../firebase"
 
 
 
-// export default function Posts(){
-//     const [posts , setPosts] = useState([]);
-//     useEffect(()=>{
-//         const unsubscribe = onSnapshot(
-//             query(collection(db , "posts"),orderBy("timestamp") , "desc")),
-//             (snapshot)=>{
-//                 setPosts(snapshot.docs)
-//             }}) 
-        
-//     }
+
 
 export default function Posts() {
     const [posts, setPosts] = useState([]);
